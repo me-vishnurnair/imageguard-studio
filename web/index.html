@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#0c121a">
+  <meta name="description" content="ImageGuard: private photo preparation and cryptographically signed provenance, entirely in your browser.">
+  <link rel="icon" type="image/svg+xml" href="./logo.svg">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+  <title>ImageGuard — Publish with intention</title>
+</head>
+<body>
+  <a class="skip-link" href="#studio">Skip to studio</a>
+  <header class="topbar wrap"><a class="brand" href="#home" aria-label="ImageGuard home"><span class="brand-icon" aria-hidden="true">✳</span> IMAGEGUARD <span class="brand-small">/ STUDIO</span></a>
+    <nav aria-label="Main navigation"><a href="#studio">Studio</a><a href="#verify">Verify</a><a href="#learn">About</a></nav><span class="private-indicator"><span class="pulse"></span> PRIVATE BY DESIGN</span>
+  </header>
+  <main id="home">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-flag"><span class="tiny-line"></span> AN OPEN PROJECT BY VISHNU R NAIR <span class="issue">01 / IMAGE RIGHTS</span></div>
+      <div class="hero-grid"><div><h1 id="hero-title">Your image.<br><em>Your rules.</em></h1>
+        <p class="hero-desc">Prepare images for sharing, attach signed publication records, and make your editing preferences visible. No accounts, uploads, or hidden servers.</p>
+        <div class="hero-actions"><a class="primary-link" href="#studio">Open the studio <span aria-hidden="true">↗</span></a><a class="subtle-link" href="#limits">What it can’t do ↗</a></div>
+      </div><div class="hero-art" aria-hidden="true"><div class="art-frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><div class="art-core"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><span>IG</span></div><span class="art-caption left">PROVENANCE / ON</span><span class="art-caption right">AI RESISTANCE / UNVERIFIED</span></div></div></div>
+      <div class="hero-foot"><span>NO CLOUD PROCESSING</span><span>OPEN SOURCE</span><span>FREE TO USE</span></div>
+    </section>
+
+    <section class="studio-section" id="studio" aria-labelledby="studio-title"><div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">01 — PREPARE</div><h2 id="studio-title">Your publishing studio<span class="dot">.</span></h2><p>Everything happens in your browser. Your original photograph stays on your device.</p></div><span class="section-aside">LOCAL PROCESSING<br>NO IMAGE UPLOADS</span></div>
+      <div class="studio-layout"><div class="control-panel">
+        <div class="control-title"><span class="number-box">01</span><h3>Choose an image</h3></div>
+        <label class="dropzone" id="dropzone" for="photo-input" tabindex="0"><input id="photo-input" type="file" accept="image/png,image/jpeg,image/webp" hidden><span class="drop-icon" aria-hidden="true">↥</span><strong>Drop a photo here</strong><span>or click to browse</span><small>PNG, JPG, WEBP · up to 20 MB · resized to max 1800 px for processing</small></label>
+        <div class="session-actions"><button id="demo-button" type="button" class="text-btn">Try a sample image ↗</button><button id="reset-session" type="button" class="text-btn">Clear session ↺</button></div>
+        <div class="file-info" id="file-info" aria-live="polite">No image selected</div>
+        <div class="control-title control-border"><span class="number-box">02</span><h3>Choose your layers</h3></div>
+        <label class="field-label" for="texture-range">Experimental microtexture <span id="texture-value">0 / 6</span></label>
+        <input id="texture-range" class="range" type="range" min="0" max="6" value="0" step="1"><p class="control-note">Subtle local pixel variation. <strong>Not a tested adversarial defense</strong> and not proven to stop AI editing.</p>
+        <label class="field-label" for="overlay-select">Visible ownership notice</label><select id="overlay-select"><option value="corner" selected>Small corner stamp</option><option value="tile">Repeating watermark</option><option value="none">None (clean photograph)</option></select>
+        <label class="field-label" for="stamp-input">Stamp text</label><input id="stamp-input" type="text" maxlength="32" value="NO AI EDITS" placeholder="Your preferred notice">
+        <div class="control-title control-border"><span class="number-box">03</span><h3>Record ownership</h3></div>
+        <label class="field-label" for="owner-input">Owner display name</label><input id="owner-input" type="text" maxlength="80" placeholder="Your name or creator handle">
+        <div class="key-buttons"><button type="button" id="create-key" class="secondary-btn">Create signing key</button><button type="button" id="save-key" class="ghost-btn" disabled>Save private key ↓</button></div>
+        <label class="import-key" for="owner-key-input">Already have a key? Import it <span>↗</span></label><input id="owner-key-input" type="file" accept="application/json,.json" hidden>
+        <div class="key-state" id="key-state">No signing key yet. You can still export an image.</div>
+        <p class="control-note">Keep your private key safe and never publish it. Share only the public key if others need to verify you.</p>
+        <button id="save-public-key" class="text-btn" type="button" disabled>Download public verification key ↗</button>
+      </div>
+      <div class="preview-panel"><div class="preview-top"><div><span class="live-dot"></span> IMAGE WORKSPACE</div><span id="workspace-state">AWAITING INPUT</span></div>
+        <div class="preview-grid"><div class="preview-cell"><div class="preview-label">01 / ORIGINAL</div><div class="photo-stage" id="original-stage"><div class="empty-preview"><span class="empty-icon">▧</span><span>Your original will appear here</span></div><img id="original-image" alt="Original image preview" hidden></div></div><div class="preview-cell"><div class="preview-label">02 / PREPARED</div><div class="photo-stage" id="result-stage"><div class="empty-preview"><span class="empty-icon">✳</span><span>Your prepared image will appear here</span></div><img id="result-image" alt="Prepared image preview" hidden></div></div></div>
+        <div class="metrics"><div><span>DIMENSIONS</span><strong id="size-stat">—</strong></div><div><span>IMAGE QUALITY (PSNR)</span><strong id="quality-stat">—</strong></div><div><span>PROOF STATUS</span><strong id="proof-stat">Not signed</strong></div></div>
+        <div class="export-row"><button type="button" class="export-main" id="download-image" disabled>Download prepared PNG <span>↓</span></button><button type="button" class="export-alt" id="download-proof" disabled>Download signed proof <span>↓</span></button></div>
+        <p class="preview-disclaimer">A signed proof verifies these exact exported bytes when a trusted key is known. It does not prevent a third party from making a fake.</p>
+      </div></div>
+      <div id="notice" class="notice" role="status" aria-live="polite"></div>
+    </div></section>
+
+    <section id="verify" class="verify-section wrap" aria-labelledby="verify-title"><div class="section-head"><div><div class="eyebrow">02 — VERIFY</div><h2 id="verify-title">Check a published image<span class="dot">.</span></h2><p>Validate a signed proof against the exact downloaded image. A trusted public key can link the signature to a known creator.</p></div></div>
+      <div class="verify-layout"><div class="verification-inputs"><label class="upload-tile">Image to check <input id="verify-image" type="file" accept="image/png,image/jpeg,image/webp"><span>Choose image file ↗</span></label><label class="upload-tile">ImageGuard proof (.json)<input id="verify-proof" type="file" accept=".json,application/json"><span>Choose signed proof ↗</span></label><label class="upload-tile optional">Trusted public key (optional)<input id="trusted-key" type="file" accept=".json,application/json"><span>Choose owner public key ↗</span></label><button id="verify-button" class="verify-button" type="button">Run verification <span>↗</span></button></div>
+      <div id="verification-results" class="verification-results" aria-live="polite"><span class="check-ring">✓</span><h3>Proof verification, explained</h3><p>A passing proof means the files match and the embedded signature is valid. <strong>Without a separately trusted public key, anyone can sign their own image.</strong></p><p>Resizing, screenshots, social media compression, or editing will break an exact-byte match.</p></div></div>
+    </section>
+    <section class="about-section" id="learn"><div class="wrap"><div class="eyebrow">03 — UNDERSTAND</div><h2>Built for the real world.<br><span>Not for impossible promises.</span></h2>
+      <div class="info-grid"><article><span>01</span><h3>Local by default</h3><p>All image transformations and signing run inside your browser. Photos are never sent to a server.</p></article><article><span>02</span><h3>Visible deterrence</h3><p>An optional ownership notice communicates your wishes. It can be cropped or erased, so it is not a security boundary.</p></article><article><span>03</span><h3>Cryptographic record</h3><p>A SHA-256 digest and an ECDSA P-256 signature let others check an exact file against a known public key.</p></article></div>
+      <div class="limit-box" id="limits"><div class="limit-flag">IMPORTANT LIMITATION</div><h3>This app cannot stop every AI edit.</h3><p>Microtexture is an educational, model-free image transformation—not the learned, gradient-optimized perturbation used in PhotoGuard. ImageGuard <strong>does not claim</strong> to block AI face swaps, deepfakes, diffusion editors, screenshots, or re-uploads. Even research defenses optimized on models do not reliably transfer to every new model.</p><p>For real protection, combine careful sharing, platform reporting, trusted provenance records, and evolving research. Read <a href="https://github.com/MadryLab/photoguard" target="_blank" rel="noopener noreferrer">MIT PhotoGuard ↗</a> and <a href="https://arxiv.org/abs/2410.05694" target="_blank" rel="noopener noreferrer">DiffusionGuard ↗</a>.</p></div></div></section>
+  </main>
+  <footer class="footer"><div class="wrap"><div class="footer-brand">IMAGEGUARD <span>© 2026 Vishnu R Nair</span></div><p>Free software · Private by design · No miracle claims</p><a href="https://github.com/me-vishnurnair/imageguard-studio">SOURCE &amp; LEARNING GUIDE ↗</a><a href="#home">BACK TO TOP ↑</a></div></footer>
+  <script type="module" src="./app.mjs"></script>
+</body></html>
