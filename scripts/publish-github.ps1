@@ -23,6 +23,9 @@ try {
         & git init
         if ($LASTEXITCODE -ne 0) { throw 'git init failed' }
     }
+    $configuredOrigin = (& git remote get-url origin 2>$null)
+    if ($configuredOrigin -and $configuredOrigin -notin @('https://github.com/me-vishnurnair/imageguard-studio', 'https://github.com/me-vishnurnair/imageguard-studio.git')) { throw 'Unexpected origin. Stop and inspect it before publishing.' }
+    if ($RepositoryName -ne 'imageguard-studio') { throw 'This helper is restricted to imageguard-studio.' }
     & git branch -M main
     & git add .
     if ($LASTEXITCODE -ne 0) { throw 'git add failed' }
@@ -34,6 +37,7 @@ try {
 
     $login = (& gh api user --jq '.login').Trim()
     if ($LASTEXITCODE -ne 0 -or -not $login) { throw 'Could not get your GitHub login.' }
+    if ($login -ne 'me-vishnurnair') { throw 'Sign in to me-vishnurnair to publish this project.' }
     $fullName = "$login/$RepositoryName"
     & gh repo view $fullName --json name --jq '.name' 2>$null | Out-Null
     $exists = ($LASTEXITCODE -eq 0)
